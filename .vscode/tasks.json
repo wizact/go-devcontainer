@@ -1,0 +1,52 @@
+{
+	"version": "2.0.0",
+	"echoCommand": true,
+	"options": {
+		"cwd": "${workspaceRoot}",
+		"env": {
+            "GOPATH": "/go"
+        }
+	},
+	"tasks": [
+		{
+			"label": "run",
+            "command": "go",
+            "type": "shell",
+			"args": ["run", "${workspaceRoot}/main.go"],
+            "group": "build"
+		},
+		{
+			"label": "build",
+            "command": "go",
+            "type": "shell",
+			"args": ["build", "-o", "${workspaceFolderBasename}"]
+		},
+        {
+			"label": "build and launch debug server",
+            "command": "./.vscode/remote-debug-server.sh",
+            "type": "shell",
+            "args": ["${workspaceFolderBasename}"],
+            "dependsOn": ["build"]
+		},
+		{
+			"label": "test",
+            "command": "go",
+			"args": ["-v", "./..."],
+            "type": "shell",
+            "group": "test"
+
+		},
+		{
+			"label": "integration_tests",
+            "command": "go",
+            "type": "shell",
+			"args": ["test", "-v", "./...", "-tags=integration"]
+		},
+		{
+			"label": "benchmark",
+            "command": "go",
+            "type": "shell",
+			"args": ["test", "-bench=.", "-v", "./..."]
+		}
+	]
+}
